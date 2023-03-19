@@ -1,7 +1,9 @@
 use std::{
     fs,
     io::{prelude, BufReader, BufRead, Write},
-    net::{TcpListener, TcpStream}
+    net::{TcpListener, TcpStream},
+    thread,
+    time::Duration
 };
 
 fn main() {
@@ -9,7 +11,9 @@ fn main() {
 
     for stream in listener.incoming() {
         let stream =  stream.unwrap();
-        handle_connection(stream);
+        thread::spawn(|| {
+            handle_connection(stream);
+        });
         // println!("Hello, world!");
 
     }
